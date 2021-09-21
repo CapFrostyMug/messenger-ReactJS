@@ -1,15 +1,30 @@
 import './App.css';
-import {Message} from "./components/Message";
+import React, {useState} from 'react';
+import {MessageList} from "./components/MessageList";
+import {MessageForm} from "./components/MessageForm";
+import {useBotsAnswer} from "./hooks/useBotsAnswer";
 
 function App() {
 
-  const greetings = 'Hello World!';
+    const [state, setState] = useState([]);
 
-  return (
-    <>
-      <Message text={greetings}/>
-    </>
-  );
-}
+    const handleClick = (...item) => {
+        setState((state) => {
+            return [
+                ...state,
+                ...item,
+            ]
+        })
+    };
+
+    useBotsAnswer(state, handleClick);
+
+    return (
+        <>
+            <MessageList messagesArr={[...state]}/>
+            <MessageForm onSubmit={handleClick}/>
+        </>
+    );
+};
 
 export default App;
