@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import {nanoid} from "nanoid";
 
 export const useBotsAnswer = (state, handleClick) => {
     useEffect(() => {
@@ -11,6 +12,7 @@ export const useBotsAnswer = (state, handleClick) => {
                 handleClick({
                     text: 'Hi! I\'m Bot :)',
                     author: 'Bot',
+                    id: nanoid(3),
                 })
             }, 1500)
         }
