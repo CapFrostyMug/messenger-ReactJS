@@ -13,6 +13,8 @@ import Grid from '@material-ui/core/Grid';
 import {Divider, Paper} from "@material-ui/core";
 import {nanoid} from "nanoid";
 import faker from "faker";
+import {Provider} from "react-redux";
+import {store} from "./store";
 
 const useStyles = makeStyles((theme) => ({
     '@global': {
@@ -76,27 +78,28 @@ function App() {
     /*useBotsAnswer(state, handleClick);*/
 
     return (
-        <div className={classes.root}>
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <Paper className={classes.header}><Header/></Paper>
+        <Provider store={store}>
+            <div className={classes.root}>
+                <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                        <Paper className={classes.header}><Header/></Paper>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <Switch>
-                <Route path='/chats'>
-                    <ChatListPage chats={chats}
-                                  addChat={handleAddChat}
-                                  removeChat={handleRemoveChat}
-                    />
-                </Route>
-                <Route path='/profile'>
-                    <ProfilePage/>
-                </Route>
-                <Route path='/'>
-                    <HomePage/>
-                </Route>
-            </Switch>
-            {/*<Grid container spacing={1}>
+                <Switch>
+                    <Route path='/chats'>
+                        <ChatListPage chats={chats}
+                                      addChat={handleAddChat}
+                                      removeChat={handleRemoveChat}
+                        />
+                    </Route>
+                    <Route path='/profile'>
+                        <ProfilePage/>
+                    </Route>
+                    <Route path='/'>
+                        <HomePage/>
+                    </Route>
+                </Switch>
+                {/*<Grid container spacing={1}>
                 <Grid item xs={4}>
                     <Paper className={classes.paper}><ChatList/></Paper>
                 </Grid>
@@ -108,7 +111,8 @@ function App() {
                     </Paper>
                 </Grid>
             </Grid>*/}
-        </div>
+            </div>
+        </Provider>
     );
 };
 
