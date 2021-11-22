@@ -4,8 +4,7 @@ import {MessageList} from "../../components/MessageList";
 import {MessageForm} from "../../components/MessageForm";
 import {Paper} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import {nanoid} from "nanoid";
-import faker from "faker";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -15,26 +14,22 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const ChatPage = ({chats}) => {
-
-    /*const {chatId} = useParams();
-
-    const currentChat = chat?.find(({id}) => id === chatId);
-
-    if (!currentChat) {
-        return <Redirect to='/chats'/>
-    }*/
+export const ChatPage = () => {
 
     const classes = useStyles();
+    const {chatId} = useParams();
+
+    const currentChat = useSelector(state => state.chatList.chats)?.find(({id}) => id === chatId);
+    if (!currentChat) {
+        return <Redirect to='/chats'/>
+    }
 
     return (
         <>
             <Paper className={classes.paper}>
-                <MessageList chats={chats}/>
-                <MessageForm/>
+                <MessageList chatId={chatId}/>
+                <MessageForm chatId={chatId}/>
             </Paper>
-            {/*<h1>{currentChat.title}</h1>
-            <h2>{currentChat.content}</h2>*/}
         </>
     );
 }

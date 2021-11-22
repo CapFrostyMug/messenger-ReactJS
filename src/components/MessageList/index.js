@@ -1,10 +1,9 @@
 import React from "react";
-import {Redirect, useParams} from "react-router-dom";
 import {Message} from "../Message";
 import {makeStyles} from "@material-ui/core/styles";
-import PropTypes from "prop-types";
+import {messagesConnect} from "../../connects/messageList";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     wrap: {
         display: 'flex',
         flexDirection: 'column',
@@ -13,40 +12,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const MessageList = ({chats}) => {
-
-    const classes = useStyles();
-
-    const {chatId} = useParams();
-    const currentChat = chats?.find(({id}) => id === chatId);
-    if (!currentChat) {
-        return <Redirect to='/chats'/>
-    }
-
-    return (
-        <div className={classes.wrap}>
-            <Message text={currentChat.content} key={chats.id}/>
-            {/*{
-                chat.map(item => <Message text={currentChat.content} key={item.id}/>)
-            }*/}
-        </div>
-    );
-};
-
-/*
-export const MessageList = ({messagesArr}) => {
+export const MessageListRender = ({messages}) => {
 
     const classes = useStyles();
 
     return (
         <div className={classes.wrap}>
             {
-                messagesArr.map(({text, id}) => <Message text={text} key={id}/>)
+                messages?.map(({content, id}) => <Message text={content} key={id}/>)
             }
         </div>
     );
 };
 
-MessageList.propTypes = {
-    messagesArr: PropTypes.array,
-}*/
+export const MessageList = messagesConnect(MessageListRender);

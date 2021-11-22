@@ -1,12 +1,13 @@
-import React, {useEffect, useRef, useState} from "react";
-import {useParams} from "react-router-dom";
+import React, {useEffect, useRef} from "react";
 import {Fab, Input} from "@material-ui/core";
 import {Send} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core/styles";
 import {nanoid} from "nanoid";
-import PropTypes from "prop-types";
+import {messagesConnect} from "../../connects/messageList";
+import {useSimpleForm} from "../../hooks/useSimpleForm";
+import {useSelector} from "react-redux";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     wrap: {
         display: 'flex',
         flexDirection: 'flex-start',
@@ -25,35 +26,43 @@ const useStyles = makeStyles((theme) => ({
 
 const ariaLabel = {'aria-label': 'description'};
 
-export const MessageForm = ({onSubmit}) => {
-
-    /*const {chatId} = useParams();*/
+export const MessageFormRender = ({chatId, addMessages}) => {
 
     const classes = useStyles();
-    const [message, setMessage] = useState({
-        text: '',
-    });
+    const {setFieldValue, getFieldValue, resetForm} = useSimpleForm({});
+
+    /*const state = useSelector(state => state.messageList.messages);*/
+
+    const handleClick = (event) => {
+        event.preventDefault();
+        const message = {
+            chatId,
+            id: nanoid(3),
+            content: getFieldValue('content'),
+        }
+        addMessages(message);
+        resetForm();
+    }
+
+    /*useEffect(() => {
+        if (
+            state !== ''
+        ) {
+            setTimeout(() => {
+                addMessages({
+                    chatId,
+                    id: nanoid(3),
+                    content: 'Hi! I\'m Bot :)',
+                    author: 'Bot',
+                })
+            }, 5000)
+        }
+    }, [state]);*/
 
     const inputRef = useRef(null);
     useEffect(() => {
         inputRef.current?.focus();
-    }, [message]);
-
-    const handleChange = (event) => {
-        setMessage({
-            text: event.target.value,
-            author: 'user',
-            id: nanoid(3),
-            /*chatId: chatId,*/
-        });
-    };
-
-    const handleClick = () => {
-        if (message.text !== '') {
-            onSubmit(message);
-            setMessage({text: ''});
-        }
-    }
+    },);
 
     return (
         <div className={classes.wrap}>
@@ -61,15 +70,17 @@ export const MessageForm = ({onSubmit}) => {
                    placeholder="Текст..."
                    inputProps={ariaLabel}
                    type="text"
-                   value={message.text}
-                   onChange={handleChange}
+                   value={getFieldValue('content')}
                    inputRef={inputRef}
+                   onChange={(event) => {
+                       setFieldValue('content', event.target.value);
+                   }}
             />
             <Fab className={classes.fab}
                  variant="circular"
                  color="primary"
                  size="small"
-                /*onClick={handleClick}*/
+                 onClick={handleClick}
             >
                 <Send/>
             </Fab>
@@ -77,7 +88,4 @@ export const MessageForm = ({onSubmit}) => {
     );
 };
 
-/*
-MessageForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-}*/
+export const MessageForm = messagesConnect(MessageFormRender);
