@@ -5,8 +5,8 @@ const mapStateToProps = (state, {chatId}) => ({
     messages: messagesSelectors.getMessageListDataId(state, chatId),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    addMessages: (message) => dispatch(createAddMessage(message)),
-});
+/*const mapDispatchToProps = (dispatch) => ({
+    addMessages: (chatId, message) => dispatch(createAddMessage(chatId, message)),
+});*/
 
-export const messagesConnect = connect(mapStateToProps, mapDispatchToProps);
+export const messagesConnect = connect(mapStateToProps, /*mapDispatchToProps*/);

@@ -1,7 +1,8 @@
-import {combineReducers, createStore} from "redux";
+import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import {profileReducer} from "./profile";
 import {chatListReducer} from './chatList';
 import {messageListReducer} from "./messageList";
+import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
     chatList: chatListReducer,
@@ -9,7 +10,9 @@ const rootReducer = combineReducers({
     profile: profileReducer,
 });
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 export const store = createStore(
     rootReducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    composeEnhancers(applyMiddleware(thunk))
 );

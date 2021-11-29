@@ -1,3 +1,5 @@
+import {nanoid} from "nanoid";
+
 export const ADD_MESSAGE = "ADD_MESSAGE";
 
 /**
@@ -7,7 +9,23 @@ export const ADD_MESSAGE = "ADD_MESSAGE";
  * @param {string} message.chatId
  */
 
-export const createAddMessage = (message) => ({
+export const createAddMessage = (chatId, message) => ({
     type: ADD_MESSAGE,
-    payload: message,
+    payload: {
+        chatId,
+        message,
+    },
 });
+
+export const addMessageWithThunk = (chatId, message) => (dispatch) => {
+    dispatch(createAddMessage(chatId, message));
+    if (message.author !== 'Bot') {
+        const botMessage = {
+            chatId,
+            id: nanoid(3),
+            content: 'Hi! I\'m Bot :)',
+            author: 'Bot',
+        }
+        setTimeout(() => dispatch(createAddMessage(chatId, botMessage)), 2000);
+    }
+}

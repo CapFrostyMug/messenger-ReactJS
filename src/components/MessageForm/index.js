@@ -1,11 +1,12 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Fab, Input} from "@material-ui/core";
 import {Send} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core/styles";
 import {nanoid} from "nanoid";
 import {messagesConnect} from "../../connects/messageList";
 import {useSimpleForm} from "../../hooks/useSimpleForm";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {addMessageWithThunk} from "../../store/messageList";
 
 const useStyles = makeStyles(() => ({
     wrap: {
@@ -30,8 +31,7 @@ export const MessageFormRender = ({chatId, addMessages}) => {
 
     const classes = useStyles();
     const {setFieldValue, getFieldValue, resetForm} = useSimpleForm({});
-
-    /*const state = useSelector(state => state.messageList.messages);*/
+    const dispatch = useDispatch();
 
     const handleClick = (event) => {
         event.preventDefault();
@@ -39,25 +39,11 @@ export const MessageFormRender = ({chatId, addMessages}) => {
             chatId,
             id: nanoid(3),
             content: getFieldValue('content'),
-        }
-        addMessages(message);
+            author: 'User',
+        };
+        dispatch(addMessageWithThunk(chatId, message));
         resetForm();
     }
-
-    /*useEffect(() => {
-        if (
-            state !== ''
-        ) {
-            setTimeout(() => {
-                addMessages({
-                    chatId,
-                    id: nanoid(3),
-                    content: 'Hi! I\'m Bot :)',
-                    author: 'Bot',
-                })
-            }, 5000)
-        }
-    }, [state]);*/
 
     const inputRef = useRef(null);
     useEffect(() => {
