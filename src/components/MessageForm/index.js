@@ -1,11 +1,11 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import {Fab, Input} from "@material-ui/core";
 import {Send} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core/styles";
 import {nanoid} from "nanoid";
 import {messagesConnect} from "../../connects/messageList";
 import {useSimpleForm} from "../../hooks/useSimpleForm";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {addMessageWithThunk} from "../../store/messageList";
 
 const useStyles = makeStyles(() => ({
@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
 
 const ariaLabel = {'aria-label': 'description'};
 
-export const MessageFormRender = ({chatId, addMessages}) => {
+export const MessageFormRender = ({chatId}) => {
 
     const classes = useStyles();
     const {setFieldValue, getFieldValue, resetForm} = useSimpleForm({});
@@ -41,8 +41,10 @@ export const MessageFormRender = ({chatId, addMessages}) => {
             content: getFieldValue('content'),
             author: 'User',
         };
-        dispatch(addMessageWithThunk(chatId, message));
-        resetForm();
+        if (getFieldValue('content') !== '') {
+            dispatch(addMessageWithThunk(chatId, message));
+            resetForm();
+        }
     }
 
     const inputRef = useRef(null);

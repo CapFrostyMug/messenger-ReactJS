@@ -19,7 +19,7 @@ export const MessageListRender = ({messages}) => {
     return (
         <div className={classes.wrap}>
             {
-                messages?.map(({content, id}) => <Message text={content} key={id}/>)
+                messages?.map(({message}) => <Message text={message.content} key={message.id}/>)
             }
         </div>
     );

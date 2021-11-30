@@ -26,6 +26,6 @@ export const addMessageWithThunk = (chatId, message) => (dispatch) => {
             content: 'Hi! I\'m Bot :)',
             author: 'Bot',
         }
-        setTimeout(() => dispatch(createAddMessage(chatId, botMessage)), 2000);
+        setTimeout(() => dispatch(createAddMessage(chatId, botMessage)), 1500);
     }
 }
