@@ -3,12 +3,12 @@ import {Route, Switch} from "react-router-dom";
 import {Header} from "./components/Header";
 import {ChatListPage} from "./pages/ChatListPage";
 import {ProfilePage} from "./pages/ProfilePage";
-import {HomePage} from "./pages/HomePage";
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {Paper} from "@material-ui/core";
 import {Provider} from "react-redux";
 import {store} from "./store";
+import {Home} from "./components/Home";
 
 const useStyles = makeStyles((theme) => ({
     '@global': {
@@ -57,7 +57,7 @@ function App() {
                         <ProfilePage/>
                     </Route>
                     <Route path='/'>
-                        <HomePage/>
+                        <Home/>
                     </Route>
                 </Switch>
             </div>
